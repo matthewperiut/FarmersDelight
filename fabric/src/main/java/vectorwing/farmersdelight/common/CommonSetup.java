@@ -29,13 +29,13 @@ import java.util.Collections;
 
 public class CommonSetup
 {
-	public static void init(final FMLCommonSetupEvent event) {
-		event.enqueueWork(() -> {
-			registerCompostables();
-			registerDispenserBehaviors();
-			registerAnimalFeeds();
-			registerStackSizeOverrides();
-		});
+	public static void init() {
+
+		registerCompostables();
+		registerDispenserBehaviors();
+		registerAnimalFeeds();
+		registerStackSizeOverrides();
+
 
 		ModAdvancements.register();
 		CraftingHelper.register(new VanillaCrateEnabledCondition.Serializer());
@@ -47,6 +47,7 @@ public class CommonSetup
 		Configuration.SOUP_ITEM_LIST.get().forEach((key) -> {
 			Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(key));
 			if (item instanceof BowlFoodItem) {
+				//use AW
 				ObfuscationReflectionHelper.setPrivateValue(Item.class, item, 16, "f_41370_");
 			}
 		});

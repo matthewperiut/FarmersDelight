@@ -24,10 +24,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CakeBlock;
 import net.minecraft.world.level.block.CarvedPumpkinBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.event.entity.living.LivingKnockBackEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import vectorwing.farmersdelight.FarmersDelight;
 import vectorwing.farmersdelight.common.registry.ModItems;
 import vectorwing.farmersdelight.common.tag.ModTags;
@@ -52,9 +48,18 @@ public class KnifeItem extends DiggerItem
 		return true;
 	}
 
+	public static void init(){
+		//LivingEntityEvents.KNOCKBACK_STRENGTH.register(KnifeItem.KnifeEvents::onKnifeKnockback);
+	}
+
 	@Mod.EventBusSubscriber(modid = FarmersDelight.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 	public static class KnifeEvents
 	{
+
+
+		public static double onKnifeKnockback(double v, Player player) {
+
+		}
 		@SubscribeEvent
 		public static void onKnifeKnockback(LivingKnockBackEvent event) {
 			LivingEntity attacker = event.getEntity().getKillCredit();
@@ -65,7 +70,7 @@ public class KnifeItem extends DiggerItem
 		}
 
 		@SubscribeEvent
-		public static void onCakeInteraction(PlayerInteractEvent.RightClickBlock event) {
+		public static InteractionResult onCakeInteraction(PlayerInteractEvent.RightClickBlock event) {
 			ItemStack toolStack = event.getEntity().getItemInHand(event.getHand());
 
 			if (!toolStack.is(ModTags.KNIVES)) {
@@ -101,10 +106,11 @@ public class KnifeItem extends DiggerItem
 						-0.05, 0, 0);
 				level.playSound(null, pos, SoundEvents.WOOL_BREAK, SoundSource.PLAYERS, 0.8F, 0.8F);
 
-				event.setCancellationResult(InteractionResult.SUCCESS);
-				event.setCanceled(true);
+				return InteractionResult.sidedSuccess(level.isClientSide);
 			}
+			return InteractionResult.PASS;
 		}
+
 	}
 
 	@Override
@@ -132,6 +138,7 @@ public class KnifeItem extends DiggerItem
 		}
 	}
 
+	// good luck with this one lol
 	@Override
 	public boolean canApplyAtEnchantingTable(ItemStack stack, net.minecraft.world.item.enchantment.Enchantment enchantment) {
 		Set<Enchantment> ALLOWED_ENCHANTMENTS = Sets.newHashSet(Enchantments.SHARPNESS, Enchantments.SMITE, Enchantments.BANE_OF_ARTHROPODS, Enchantments.KNOCKBACK, Enchantments.FIRE_ASPECT, Enchantments.MOB_LOOTING);

@@ -1,6 +1,7 @@
 package vectorwing.farmersdelight.common.item;
 
 import com.google.common.collect.Lists;
+import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -20,10 +21,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import vectorwing.farmersdelight.FarmersDelight;
+import net.minecraft.world.phys.EntityHitResult;
+import org.jetbrains.annotations.Nullable;
 import vectorwing.farmersdelight.common.Configuration;
 import vectorwing.farmersdelight.common.registry.ModItems;
 import vectorwing.farmersdelight.common.registry.ModParticleTypes;
@@ -31,8 +30,9 @@ import vectorwing.farmersdelight.common.tag.ModTags;
 import vectorwing.farmersdelight.common.utility.MathUtils;
 import vectorwing.farmersdelight.common.utility.TextUtils;
 
-import org.jetbrains.annotations.Nullable;;
 import java.util.List;
+
+;
 
 public class DogFoodItem extends ConsumableItem
 {
@@ -45,15 +45,18 @@ public class DogFoodItem extends ConsumableItem
 		super(properties);
 	}
 
-	@Mod.EventBusSubscriber(modid = FarmersDelight.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+	public static void init(){
+		UseEntityCallback.EVENT.register(DogFoodItem.DogFoodEvent::onDogFoodApplied);
+	}
+
 	public static class DogFoodEvent
 	{
-		@SubscribeEvent
-		@SuppressWarnings("unused")
-		public static void onDogFoodApplied(PlayerInteractEvent.EntityInteract event) {
-			Player player = event.getEntity();
-			Entity target = event.getTarget();
-			ItemStack itemStack = event.getItemStack();
+
+		public static InteractionResult onDogFoodApplied(Player player, Level level, InteractionHand hand, Entity target,
+														 @Nullable EntityHitResult entityHitResult) {
+			if (player.isSpectator()) return InteractionResult.PASS;
+
+			ItemStack itemStack = player.getItemInHand(hand);
 
 			if (target instanceof LivingEntity entity && target.getType().is(ModTags.DOG_FOOD_USERS)) {
 				boolean isTameable = entity instanceof TamableAnimal;
@@ -77,11 +80,12 @@ public class DogFoodItem extends ConsumableItem
 						itemStack.shrink(1);
 					}
 
-					event.setCancellationResult(InteractionResult.SUCCESS);
-					event.setCanceled(true);
+					return InteractionResult.sidedSuccess(level.isClientSide);
 				}
 			}
+			return InteractionResult.PASS;
 		}
+
 	}
 
 	@Override

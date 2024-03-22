@@ -2,6 +2,8 @@ package vectorwing.farmersdelight;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import io.github.fabricators_of_create.porting_lib.config.ConfigRegistry;
+import io.github.fabricators_of_create.porting_lib.config.ConfigType;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.RecipeBookType;
@@ -9,7 +11,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import vectorwing.farmersdelight.common.CommonSetup;
 import vectorwing.farmersdelight.common.Configuration;
-import vectorwing.farmersdelight.common.crafting.ingredient.ToolActionIngredient;
 import vectorwing.farmersdelight.common.event.CommonEvents;
 import vectorwing.farmersdelight.common.event.VillagerEvents;
 import vectorwing.farmersdelight.common.item.DogFoodItem;
@@ -33,9 +34,8 @@ public class FarmersDelight implements ModInitializer
 	@Override
 	public void onInitialize() {
 
-		//TODO: figure out how to register these
-		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Configuration.COMMON_CONFIG);
-		ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Configuration.CLIENT_CONFIG);
+		ConfigRegistry.registerConfig(MODID, ConfigType.COMMON, Configuration.COMMON_CONFIG);
+		ConfigRegistry.registerConfig(MODID, ConfigType.CLIENT, Configuration.CLIENT_CONFIG);
 
 		ModSounds.SOUNDS.register();
 		ModBlocks.BLOCKS.register();

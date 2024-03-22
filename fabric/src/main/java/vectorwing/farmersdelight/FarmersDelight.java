@@ -47,7 +47,7 @@ public class FarmersDelight implements ModInitializer
 		ModBiomeFeatures.FEATURES.register();
 		ModCreativeTabs.CREATIVE_TABS.register();
 		ModPlacementModifiers.PLACEMENT_MODIFIERS.register();
-		ModBiomeModifiers.BIOME_MODIFIER_SERIALIZERS.register();
+		//ModBiomeModifiers.BIOME_MODIFIER_SERIALIZERS.register();
 		ModLootFunctions.LOOT_FUNCTIONS.register();
 		ModLootModifiers.LOOT_MODIFIERS.register();
 

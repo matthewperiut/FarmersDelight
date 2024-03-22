@@ -71,9 +71,4 @@ public class RottenTomatoEntity extends ThrowableItemProjectile
 			this.discard();
 		}
 	}
-
-	@Override
-	public Packet<ClientGamePacketListener> getAddEntityPacket() {
-		return NetworkHooks.getEntitySpawningPacket(this);
-	}
 }

@@ -3,6 +3,7 @@ package vectorwing.farmersdelight.common.item;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
+import io.github.fabricators_of_create.porting_lib.enchant.CustomEnchantingBehaviorItem;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -37,10 +38,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.entity.living.LivingDamageEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import vectorwing.farmersdelight.FarmersDelight;
 import vectorwing.farmersdelight.common.block.SkilletBlock;
 import vectorwing.farmersdelight.common.block.entity.SkilletBlockEntity;
 import vectorwing.farmersdelight.common.registry.ModItems;
@@ -54,7 +51,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @SuppressWarnings({"deprecation", "unused"})
-public class SkilletItem extends BlockItem
+public class SkilletItem extends BlockItem implements CustomEnchantingBehaviorItem
 {
 	public static final Tiers SKILLET_TIER = Tiers.IRON;
 	protected static final UUID FD_ATTACK_KNOCKBACK_UUID = UUID.fromString("e56350e0-8756-464d-92f9-54289ab41e0a");
@@ -71,20 +68,22 @@ public class SkilletItem extends BlockItem
 		this.toolAttributes = builder.build();
 	}
 
-	@Mod.EventBusSubscriber(modid = FarmersDelight.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 	public static class SkilletEvents
 	{
-		@SubscribeEvent
-		public static void playSkilletAttackSound(LivingDamageEvent event) {
-			DamageSource damageSource = event.getSource();
-			Entity attacker = damageSource.getDirectEntity();
+		/*
+		 This is modfiied before the player loses their attack power, and is unmodified as soon as the Skillet sound is played.
+		 This doesn't exist on Forge because they moved the resetting of attack power to after the events are fired.
+		 */
+		public static float attackPower = 0.0F;
+
+		public static void playSkilletAttackSound(LivingEntity entity, DamageSource source) {
+            Entity attacker = source.getDirectEntity();
 
 			if (!(attacker instanceof LivingEntity livingEntity)) return;
 			if (!livingEntity.getItemInHand(InteractionHand.MAIN_HAND).is(ModItems.SKILLET.get())) return;
 
 			float pitch = 0.9F + (livingEntity.getRandom().nextFloat() * 0.2F);
 			if (livingEntity instanceof Player player) {
-				float attackPower = player.getAttackStrengthScale(0.0F);
 				if (attackPower > 0.8F) {
 					player.getCommandSenderWorld().playSound(null, player.getX(), player.getY(), player.getZ(), ModSounds.ITEM_SKILLET_ATTACK_STRONG.get(), SoundSource.PLAYERS, 1.0F, pitch);
 				} else {
@@ -93,6 +92,7 @@ public class SkilletItem extends BlockItem
 			} else {
 				livingEntity.getCommandSenderWorld().playSound(null, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(), ModSounds.ITEM_SKILLET_ATTACK_STRONG.get(), SoundSource.PLAYERS, 1.0F, pitch);
 			}
+			attackPower = 0.0F;
 		}
 	}
 

@@ -2,6 +2,8 @@ package vectorwing.farmersdelight;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import io.github.fabricators_of_create.porting_lib.config.ConfigRegistry;
+import io.github.fabricators_of_create.porting_lib.config.ConfigType;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.RecipeBookType;
@@ -9,11 +11,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import vectorwing.farmersdelight.common.CommonSetup;
 import vectorwing.farmersdelight.common.Configuration;
-import vectorwing.farmersdelight.common.crafting.ingredient.ToolActionIngredient;
+import vectorwing.farmersdelight.common.block.entity.CookingPotBlockEntity;
+import vectorwing.farmersdelight.common.block.entity.CuttingBoardBlockEntity;
 import vectorwing.farmersdelight.common.event.CommonEvents;
 import vectorwing.farmersdelight.common.event.VillagerEvents;
 import vectorwing.farmersdelight.common.item.DogFoodItem;
 import vectorwing.farmersdelight.common.item.HorseFeedItem;
+import vectorwing.farmersdelight.common.item.KnifeItem;
 import vectorwing.farmersdelight.common.registry.*;
 import vectorwing.farmersdelight.common.world.VillageStructures;
 
@@ -24,7 +28,8 @@ public class FarmersDelight implements ModInitializer
 	public static final Logger LOGGER = LogManager.getLogger();
 	public static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 
-	public static final RecipeBookType RECIPE_TYPE_COOKING = RecipeBookType.create("COOKING");
+	// Moved initializer to RecipeBookTypeMixin.
+	public static final RecipeBookType RECIPE_TYPE_COOKING = RecipeBookType.valueOf("COOKING");
 
 	public static ResourceLocation res(String name) {
 		return new ResourceLocation(MODID, name);
@@ -32,10 +37,8 @@ public class FarmersDelight implements ModInitializer
 
 	@Override
 	public void onInitialize() {
-
-		//TODO: figure out how to register these
-		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Configuration.COMMON_CONFIG);
-		ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Configuration.CLIENT_CONFIG);
+		ConfigRegistry.registerConfig(MODID, ConfigType.COMMON, Configuration.COMMON_CONFIG);
+		ConfigRegistry.registerConfig(MODID, ConfigType.CLIENT, Configuration.CLIENT_CONFIG);
 
 		ModSounds.SOUNDS.register();
 		ModBlocks.BLOCKS.register();
@@ -57,14 +60,17 @@ public class FarmersDelight implements ModInitializer
 
 		VillageStructures.init();
 		CommonEvents.init();
-		VillagerEvents.addTrades();
+		VillagerEvents.init();
 
 
 		CommonSetup.init();
 
 		// new stuff
 		ModBiomeModifiers.init();
+		CookingPotBlockEntity.init();
+		CuttingBoardBlockEntity.init();
 		DogFoodItem.init();
 		HorseFeedItem.init();
+		KnifeItem.init();
 	}
 }

@@ -3,19 +3,20 @@ package vectorwing.farmersdelight.common.crafting;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import io.github.fabricators_of_create.porting_lib.transfer.item.RecipeWrapper;
+import io.github.fabricators_of_create.porting_lib.util.CraftingHelper;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.crafting.CraftingHelper;
-import net.minecraftforge.items.wrapper.RecipeWrapper;
 import vectorwing.farmersdelight.FarmersDelight;
 import vectorwing.farmersdelight.client.recipebook.CookingPotRecipeBookTab;
 import vectorwing.farmersdelight.common.registry.ModItems;
@@ -48,8 +49,8 @@ public class CookingPotRecipe implements Recipe<RecipeWrapper>
 
 		if (!container.isEmpty()) {
 			this.container = container;
-		} else if (!output.getCraftingRemainingItem().isEmpty()) {
-			this.container = output.getCraftingRemainingItem();
+		} else if (output.getRecipeRemainder() != null && !output.getRecipeRemainder().isEmpty()) {
+			this.container = output.getRecipeRemainder();
 		} else {
 			this.container = ItemStack.EMPTY;
 		}
@@ -102,17 +103,17 @@ public class CookingPotRecipe implements Recipe<RecipeWrapper>
 
 	@Override
 	public boolean matches(RecipeWrapper inv, Level level) {
-		java.util.List<ItemStack> inputs = new java.util.ArrayList<>();
+		StackedContents stackedContents = new StackedContents();
 		int i = 0;
 
 		for (int j = 0; j < INPUT_SLOTS; ++j) {
 			ItemStack itemstack = inv.getItem(j);
 			if (!itemstack.isEmpty()) {
 				++i;
-				inputs.add(itemstack);
+				stackedContents.accountStack(itemstack, 1);
 			}
 		}
-		return i == this.inputItems.size() && net.minecraftforge.common.util.RecipeMatcher.findMatches(inputs, this.inputItems) != null;
+		return i == this.inputItems.size() && stackedContents.canCraft(this, null);
 	}
 
 	@Override

@@ -1,8 +1,10 @@
 {
-  "conditions": [
+  "fabric:load_conditions": [
     {
-      "type": "forge:mod_loaded",
-      "modid": "create"
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "create"
+      ]
     }
   ],
   "type": "create:filling",
@@ -11,7 +13,7 @@
       "item": "farmersdelight:pie_crust"
     },
     {
-      "fluidTag": "forge:chocolate",
+      "fluidTag": "c:chocolate",
       "amount": 500
     }
   ],

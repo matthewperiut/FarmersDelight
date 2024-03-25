@@ -8,13 +8,18 @@
     "CuttingBoardDispenserMixin",
     "KeepRichSoilGiantTreeMixin",
     "KeepRichSoilTreeMixin",
+    "LivingEntityMixin",
+    "PlayerMixin",
     "RabbitsEatCabbageMixin",
+    "RecipeBookSettingsMixin",
+    "RecipeBookTypeMixin",
     "SoupItemMixin",
     "accessor.RecipeManagerAccessor"
   ],
   "client": [
     "CanvasSignEditScreenMixin",
-    "HideBlockBreakProgressMixin"
+    "HideBlockBreakProgressMixin",
+    "RecipeBookCategoriesMixin"
   ],
   "injectors": {
     "defaultRequire": 1

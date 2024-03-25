@@ -1,5 +1,7 @@
 package vectorwing.farmersdelight.common.block;
 
+import io.github.fabricators_of_create.porting_lib.transfer.item.ItemStackHandlerContainer;
+import io.github.fabricators_of_create.porting_lib.util.NetworkHooks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -209,7 +211,7 @@ public class CookingPotBlock extends BaseEntityBlock implements SimpleWaterlogge
 	public int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos pos) {
 		BlockEntity tileEntity = level.getBlockEntity(pos);
 		if (tileEntity instanceof CookingPotBlockEntity) {
-			ItemStackHandler inventory = ((CookingPotBlockEntity) tileEntity).getInventory();
+			ItemStackHandlerContainer inventory = ((CookingPotBlockEntity) tileEntity).getInventory();
 			return MathUtils.calcRedstoneFromItemHandler(inventory);
 		}
 		return 0;

@@ -1,5 +1,6 @@
 package vectorwing.farmersdelight.common.block.entity;
 
+import io.github.fabricators_of_create.porting_lib.transfer.item.ItemStackHandlerContainer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -19,8 +20,6 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
 import vectorwing.farmersdelight.common.block.SkilletBlock;
 import vectorwing.farmersdelight.common.mixin.accessor.RecipeManagerAccessor;
 import vectorwing.farmersdelight.common.registry.ModBlockEntityTypes;
@@ -34,7 +33,7 @@ import java.util.Optional;
 
 public class SkilletBlockEntity extends SyncedBlockEntity implements HeatableBlockEntity
 {
-	private final ItemStackHandler inventory = createHandler();
+	private final ItemStackHandlerContainer inventory = createHandler();
 	private int cookingTime;
 	private int cookingTimeTotal;
 	private ResourceLocation lastRecipeID;
@@ -99,7 +98,7 @@ public class SkilletBlockEntity extends SyncedBlockEntity implements HeatableBlo
 						direction.getStepX() * 0.08F, 0.25F, direction.getStepZ() * 0.08F);
 
 				cookingTime = 0;
-				inventory.extractItem(0, 1, false);
+				inventory.removeItem(0, 1);
 			}
 		}
 	}
@@ -171,7 +170,7 @@ public class SkilletBlockEntity extends SyncedBlockEntity implements HeatableBlo
 		if (recipe.isPresent()) {
 			cookingTimeTotal = SkilletBlock.getSkilletCookingTime(recipe.get().getCookingTime(), fireAspectLevel);
 			boolean wasEmpty = getStoredStack().isEmpty();
-			ItemStack remainderStack = inventory.insertItem(0, addedStack.copy(), false);
+			ItemStack remainderStack =  ItemUtils.insertItem(inventory, 0, addedStack.copy(), false);
 			if (!ItemStack.matches(remainderStack, addedStack)) {
 				lastRecipeID = recipe.get().getId();
 				cookingTime = 0;
@@ -187,10 +186,10 @@ public class SkilletBlockEntity extends SyncedBlockEntity implements HeatableBlo
 	}
 
 	public ItemStack removeItem() {
-		return inventory.extractItem(0, getStoredStack().getMaxStackSize(), false);
+		return inventory.removeItem(0, getStoredStack().getMaxStackSize());
 	}
 
-	public IItemHandler getInventory() {
+	public ItemStackHandlerContainer getInventory() {
 		return inventory;
 	}
 
@@ -202,8 +201,8 @@ public class SkilletBlockEntity extends SyncedBlockEntity implements HeatableBlo
 		return !getStoredStack().isEmpty();
 	}
 
-	private ItemStackHandler createHandler() {
-		return new ItemStackHandler()
+	private ItemStackHandlerContainer createHandler() {
+		return new ItemStackHandlerContainer()
 		{
 			@Override
 			protected void onContentsChanged(int slot) {

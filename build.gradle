@@ -9,7 +9,7 @@ version = mod_version
 group = mod_group_id
 
 base {
-    archivesName = "FarmersDelight-Fabric"
+    archivesName = "FarmersDelight-Refabricated"
 }
 
 loom {
@@ -58,7 +58,7 @@ repositories {
 
     maven { url = "https://maven.parchmentmc.org" } // Parchment
     maven { url = "https://maven.fabricmc.net/" } // FAPI, Loader
-    maven { url = "https://mvn.devos.one/snapshots/" } // Registrate, Porting Lib, Forge Tags, Milk Lib
+    maven { url = "https://mvn.devos.one/releases/" } // Registrate, Porting Lib, Forge Tags, Milk Lib
     maven { // for Porting Lib: Fabric ASM
         url = "https://jitpack.io/"
     }
@@ -137,16 +137,21 @@ var changelogText = changelogFile.exists() ? changelogFile.text : ""
 if (env.MODRINTH_TOKEN) {
     modrinth {
         projectId = modrinth_project_id
+        versionName = "Farmer's Delight Refabricated ${mod_version.split("-")[1]} - ${minecraft_version}"
         uploadFile = tasks.remapJar
-        additionalFiles.add(tasks.remapSourcesJar)
         gameVersions = [minecraft_version]
-        loaders = ["fabric"]
+        loaders = ["fabric", "quilt"]
         changelog = changelogText
-        versionNumber = "fabric" +"_"+ mod_version
+        versionNumber = mod_version
         versionType = "release"
 
         dependencies {
             required.project "fabric-api"
+            embedded.project "porting_lib"
+            optional.project "crafttweaker"
+            optional.project "jei"
+            optional.project "rei"
+            optional.project "emi"
         }
     }
 }
@@ -161,12 +166,19 @@ if (env.CURSEFORGE_TOKEN) {
             releaseType = 'release'
             addGameVersion minecraft_version
             addGameVersion "Fabric"
+            addGameVersion "Quilt"
 
-            mainArtifact(tasks.remapJar)
-            addArtifact(tasks.remapSourcesJar)
+            mainArtifact(tasks.remapJar) {
+                displayName = "Farmer's Delight Refabricated ${mod_version.split("-")[1]} - ${minecraft_version}"
+            }
 
             relations {
                 requiredDependency "fabric-api"
+                embeddedLibrary "porting-lib"
+                optionalDependency "crafttweaker"
+                optionalDependency "jei"
+                optionalDependency "roughly-enough-items"
+                optionalDependency "emi"
             }
         }
     }
@@ -221,15 +233,24 @@ jar {
 publishing {
     publications {
         mavenJava(MavenPublication) {
+            groupId project.group
+            artifactId project.archivesBaseName
+            version project.version
             from components.java
         }
     }
 
-    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
     repositories {
-        // Add repositories to publish to here.
-        // Notice: This block does NOT have the same function as the block in the top level.
-        // The repositories here will be used for publishing your artifact, not for
-        // retrieving dependencies.
+        maven {
+            name "greenhouse"
+            url "https://maven.greenhouseteam.dev/releases"
+            credentials {
+                username System.getenv('MAVEN_USERNAME')
+                password System.getenv('MAVEN_PASSWORD')
+            }
+            authentication {
+                create("basic", BasicAuthentication)
+            }
+        }
     }
 }

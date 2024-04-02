@@ -116,6 +116,7 @@ dependencies {
     modCompileOnly("curse.maven:farmers-knives-628972:5178087")
     modImplementation("curse.maven:oceans-delight-841262:4652063")
     modImplementation("curse.maven:fabric-seasons-delight-compat-859370:4533190")
+    modImplementation("curse.maven:chefs-delight-fabric-736986:4751399")
     modImplementation("curse.maven:fabric-seasons-413523:4699698")
     modCompileOnly("curse.maven:slice-and-dice-659674:5184596")
 

@@ -21,7 +21,7 @@ The provided links through the mod names will be the Modrinth pages for each ind
 |[Chef's Delight](https://modrinth.com/mod/chefs-delight)|✅|➖| No Contact
 |[Create Central Kitchen](https://modrinth.com/mod/create-central-kitchen/)|❎|Planned| Previously blocked by Farmer's Delight Fabric not using the same package names, planning on going Multiloader.
 |[Create: Food](https://modrinth.com/mod/create-food/)|✅|❓| No Contact
-|[Create's Delight](https://modrinth.com/mod/creates-delight)|✅|❓| No Contact
+|[Create's Delight](https://modrinth.com/mod/creates-delight)|✅|✅| No Contact
 |[Cultural Creators](https://legacy.curseforge.com/minecraft/mc-mods/cultural-creators-fabric-create-and-cultural/)|✅|❓| No Contact
 |[Cultural Delights (Fabric)](https://modrinth.com/mod/cultural-delights-fabric)|✅|❓| Same as Brewin' And Chewin' (Fabric).
 [Delightful Creators](https://modrinth.com/mod/delightful-creators-fabric/)|✅|❓| No Contact
@@ -33,7 +33,8 @@ The provided links through the mod names will be the Modrinth pages for each ind
 |[Fright's Delight](https://modrinth.com/mod/frights-delight/version/fabric-1.20.1-1.0.2)|✅|As of 1.0.2|
 |[Just Enough Farmer's Recipes](https://legacy.curseforge.com/minecraft/mc-mods/farmers-delight-jei-plugin)|✅|❎| JEI is supported by default in Refabricated.
 |[Kebab's Delight](https://legacy.curseforge.com/minecraft/mc-mods/kebabs-delight)|✅|❓| No Contact
-|[More Delight](https://modrinth.com/mod/more-delight)|✅|➖|
+|[More Delight](https://modrinth.com/mod/more-delight)|✅|✅|
+|[Storage Delight](https://modrinth.com/mod/storage-delight)|✅|✅|
 |[Nether's Delight (Fabric)](https://legacy.curseforge.com/minecraft/mc-mods/nethers-delight-fabric/)|✅|➖|
 |[Ocean's Delight](https://modrinth.com/mod/oceans-delight)|Has specific FDF version|Has specific FDRF versions|
 |[Recipe Book Delight](https://modrinth.com/mod/recipe-book-delight)|✅|❎| The Recipe Book is supported by default in Refabricated.

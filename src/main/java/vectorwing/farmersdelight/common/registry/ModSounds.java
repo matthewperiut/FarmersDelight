@@ -2,7 +2,6 @@ package vectorwing.farmersdelight.common.registry;
 
 import com.google.common.base.Suppliers;
 import net.minecraft.core.Registry;
-import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;

@@ -27,6 +27,12 @@ Thank you for visiting the repository! If you'd like to contribute with the mod,
 
 I am open to constructive feedback about the mod's code: if you spot any glaring mistakes in my code, and/or you know a better way to accomplish something, feel free to open an issue/PR about it. Any help is appreciated!
 
+### Information regarding addons/the project relating to Farmer's Delight Fabric
+
+[Differences between the two codebases.](./information/Differences.md)
+
+[Addons/Integration support for both ports.](./information/Addons_And_Integrations.md)
+
 ### Depending on Farmer's Delight Refabricated
 Starting from 2.0.7, Farmer's Delight Refabricated can be depended on within development environments through the Greenhouse Maven (https://maven.greenhouseteam.dev/).
 
@@ -46,6 +52,13 @@ repositories {
     }
 }
 dependencies {
-    modImplementation "vectorwing:FarmersDelight-Refabricated:${fdrf_version}"
+    modImplementation("vectorwing:FarmersDelight:${fdrf_version}") {
+        exclude(group: "net.fabricmc")
+    }
 }
+```
+
+Replace the `x`s with the current version number.
+```properties
+fdfr_version=1.20.1-x.x.x+refabricated
 ```

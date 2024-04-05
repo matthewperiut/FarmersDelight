@@ -68,6 +68,7 @@ repositories {
         url = "https://maven.jamieswhiteshirt.com/libs-release"
         content { includeGroup("com.jamieswhiteshirt") }
     }
+    maven { url 'https://maven.draylar.dev/releases/' }
     mavenCentral() // Mixin Extras
 }
 
@@ -111,8 +112,8 @@ dependencies {
     // Uncomment the below to test REI.
     // modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:${rei_version}"
 
-//    modImplementation("curse.maven:farmers-respite-fabric-811003:4754429")
-  //  modImplementation("curse.maven:forge-config-api-port-fabric-547434:4583000")
+    // modImplementation("curse.maven:farmers-respite-fabric-811003:4754429")
+    // modImplementation("curse.maven:forge-config-api-port-fabric-547434:4583000")
     modCompileOnly("curse.maven:farmers-knives-628972:5178087")
     modImplementation("curse.maven:oceans-delight-841262:4652063")
     modImplementation("curse.maven:fabric-seasons-delight-compat-859370:4533190")
@@ -120,6 +121,20 @@ dependencies {
     modCompileOnly("curse.maven:slice-and-dice-659674:5184596")
 
     modImplementation("curse.maven:frights-delight-927591:4857179")
+
+    // Testing Addon Compatibility
+    modImplementation("dev.draylar.omega-config:omega-config-base:${project.omega_version}")
+    // modImplementation("curse.maven:cultural-delights-fabric-807107:4681058")
+    // modImplementation("curse.maven:chefs-delight-fabric-736986:4751399")
+
+
+    // Working
+    // modImplementation("curse.maven:casualness-delight-909519:5212605")
+    // modImplementation("curse.maven:crate-delight-fabric-957811:5230321")
+    // modImplementation("curse.maven:ends-delight-662675:5231716")
+    // modImplementation("curse.maven:expanded-delight-620770:5177998")
+    // modImplementation("curse.maven:nethers-delight-fabric-701831:4778206")
+    // modImplementation("curse.maven:ubes-delight-903894:4976358")
 
     modCompileOnly("dev.emi:emi-fabric:${emi_version}:api") {
         exclude(group: "net.fabricmc.fabric-api")

@@ -68,6 +68,7 @@ repositories {
         url = "https://maven.jamieswhiteshirt.com/libs-release"
         content { includeGroup("com.jamieswhiteshirt") }
     }
+    maven { url 'https://maven.draylar.dev/releases/' }
     mavenCentral() // Mixin Extras
 }
 
@@ -135,7 +136,7 @@ dependencies {
     //modImplementation("curse.maven:ends-delight-662675:4678087")
     //modImplementation("curse.maven:slice-and-dice-659674:5184596")
     //modImplementation("draylar.omegaconfig:omega-config-base-1.2.3-1.18.1")
-
+    //modImplementation("dev.draylar.omega-config:omega-config-base:${project.omega_version}")
     //modImplementation("curse.maven:frights-delight-927591:4857179")
     //modImplementation("curse.maven:nethers-delight-fabric-701831:4778206")
 

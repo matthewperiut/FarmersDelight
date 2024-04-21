@@ -26,11 +26,12 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.inventory.RecipeHolder;
+import net.minecraft.world.inventory.RecipeCraftingHolder;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -48,6 +49,7 @@ import vectorwing.farmersdelight.common.registry.ModRecipeTypes;
 import vectorwing.farmersdelight.common.utility.ItemUtils;
 import vectorwing.farmersdelight.common.utility.TextUtils;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -56,7 +58,7 @@ import static java.util.Map.entry;
 
 ;
 
-public class CookingPotBlockEntity extends SyncedBlockEntity implements MenuProvider, HeatableBlockEntity, Nameable, RecipeHolder
+public class CookingPotBlockEntity extends SyncedBlockEntity implements MenuProvider, HeatableBlockEntity, Nameable, RecipeCraftingHolder
 {
 	public static final int MEAL_DISPLAY_SLOT = 6;
 	public static final int CONTAINER_SLOT = 7;
@@ -284,14 +286,14 @@ public class CookingPotBlockEntity extends SyncedBlockEntity implements MenuProv
 		}
 
 		if (checkNewRecipe) {
-			Optional<CookingPotRecipe> recipe = level.getRecipeManager().getRecipeFor(ModRecipeTypes.COOKING.get(), inventoryWrapper, level);
+			Optional<RecipeHolder<CookingPotRecipe>> recipe = level.getRecipeManager().getRecipeFor(ModRecipeTypes.COOKING.get(), inventoryWrapper, level);
 			if (recipe.isPresent()) {
-				ResourceLocation newRecipeID = recipe.get().getId();
+				ResourceLocation newRecipeID = recipe.get().id();
 				if (lastRecipeID != null && !lastRecipeID.equals(newRecipeID)) {
 					cookTime = 0;
 				}
 				lastRecipeID = newRecipeID;
-				return recipe;
+				// todo: return recipe;
 			}
 		}
 
@@ -355,7 +357,7 @@ public class CookingPotBlockEntity extends SyncedBlockEntity implements MenuProv
 		} else if (ItemStack.isSameItem(storedMealStack, resultStack)) {
 			storedMealStack.grow(resultStack.getCount());
 		}
-		cookingPot.setRecipeUsed(recipe);
+		// todo: cookingPot.setRecipeUsed(recipe);
 
 		for (int i = 0; i < MEAL_DISPLAY_SLOT; ++i) {
 			ItemStack slotStack = inventory.getStackInSlot(i);
@@ -380,33 +382,35 @@ public class CookingPotBlockEntity extends SyncedBlockEntity implements MenuProv
 	}
 
 	@Override
-	public void setRecipeUsed(@Nullable Recipe<?> recipe) {
+	public void setRecipeUsed(@Nullable RecipeHolder<?> recipe) {
 		if (recipe != null) {
-			ResourceLocation recipeID = recipe.getId();
+			ResourceLocation recipeID = recipe.id();
 			usedRecipeTracker.addTo(recipeID, 1);
 		}
 	}
 
 	@Nullable
 	@Override
-	public Recipe<?> getRecipeUsed() {
+	public RecipeHolder<?> getRecipeUsed() {
 		return null;
 	}
 
 	@Override
 	public void awardUsedRecipes(Player player, List<ItemStack> items) {
-		List<Recipe<?>> usedRecipes = getUsedRecipesAndPopExperience(player.level(), player.position());
+		Collection<RecipeHolder<?>> usedRecipes = getUsedRecipesAndPopExperience(player.level(), player.position());
 		player.awardRecipes(usedRecipes);
 		usedRecipeTracker.clear();
 	}
 
-	public List<Recipe<?>> getUsedRecipesAndPopExperience(Level level, Vec3 pos) {
-		List<Recipe<?>> list = Lists.newArrayList();
+	public Collection<RecipeHolder<?>> getUsedRecipesAndPopExperience(Level level, Vec3 pos) {
+		Collection<RecipeHolder<?>> list = Lists.newArrayList();
 
 		for (Object2IntMap.Entry<ResourceLocation> entry : usedRecipeTracker.object2IntEntrySet()) {
 			level.getRecipeManager().byKey(entry.getKey()).ifPresent((recipe) -> {
 				list.add(recipe);
-				splitAndSpawnExperience((ServerLevel) level, pos, entry.getIntValue(), ((CookingPotRecipe) recipe).getExperience());
+				// todo: fix
+				// temporarily removed ((CookingPotRecipe) recipe).getExperience() from second param
+				splitAndSpawnExperience((ServerLevel) level, pos, entry.getIntValue(), 2);
 			});
 		}
 

@@ -4,7 +4,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import io.github.fabricators_of_create.porting_lib.transfer.item.RecipeWrapper;
-import io.github.fabricators_of_create.porting_lib.util.CraftingHelper;
+//import io.github.fabricators_of_create.porting_lib.util.
+		//CraftingHelper;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
@@ -61,10 +62,6 @@ public class CookingPotRecipe implements Recipe<RecipeWrapper>
 		this.cookTime = cookTime;
 	}
 
-	@Override
-	public ResourceLocation getId() {
-		return this.id;
-	}
 
 	@Override
 	public String getGroup() {
@@ -147,7 +144,7 @@ public class CookingPotRecipe implements Recipe<RecipeWrapper>
 
 		if (Float.compare(that.getExperience(), getExperience()) != 0) return false;
 		if (getCookTime() != that.getCookTime()) return false;
-		if (!getId().equals(that.getId())) return false;
+		if (!id.equals(that.id)) return false;
 		if (!getGroup().equals(that.getGroup())) return false;
 		if (tab != that.tab) return false;
 		if (!inputItems.equals(that.inputItems)) return false;
@@ -157,7 +154,7 @@ public class CookingPotRecipe implements Recipe<RecipeWrapper>
 
 	@Override
 	public int hashCode() {
-		int result = getId().hashCode();
+		int result = id.hashCode();
 		result = 31 * result + getGroup().hashCode();
 		result = 31 * result + (getRecipeBookTab() != null ? getRecipeBookTab().hashCode() : 0);
 		result = 31 * result + inputItems.hashCode();
